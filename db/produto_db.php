@@ -75,6 +75,19 @@ class Produtos
 
       return $query->fetchAll(PDO::FETCH_ASSOC);
    }
+   public function carrinho($string id_usuario){
+      $usuario = "root";
+      $senha_banco = "";
+      $conexao = "mysql:host=localhost;dbname=loja";
+
+      $pdo = new PDO($conexao, $usuario, $senha_banco);
+
+      $query = $pdo->prepare("SELECT p.nome, p.valor FROM produtos INNER JOIN carrinho_produtos");
+
+      $query->execute();
+
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+   }
    public function atualizar_produto(string $id, string $url, string $nome, string $descricao, string $valor, string $categoria)
    {
       $usuario = "root";
