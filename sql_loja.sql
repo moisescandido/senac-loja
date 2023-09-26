@@ -36,7 +36,7 @@ nome varchar(50) not null unique
 create table carrinho_produtos(
 id int not null primary key auto_increment,
 id_produto int not null,
-id_usuario int not null,
+id_usuario int not null
 );
 
 
