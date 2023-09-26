@@ -40,3 +40,9 @@ id_usuario int not null
 );
 
 
+-- teste exemplo
+-- select c.id, p.nome, p.valor from produtos p 
+-- inner join carrinho_produtos c 
+-- on p.id = c.id_produto
+-- inner join usuarios u 
+-- on u.id = c.id_usuario and u.id = 1;
