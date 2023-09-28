@@ -75,18 +75,51 @@ class Produtos
 
       return $query->fetchAll(PDO::FETCH_ASSOC);
    }
-   public function carrinho($string id_usuario){
+   public function produtos_carrinho(string $id_usuario)
+   {
       $usuario = "root";
       $senha_banco = "";
       $conexao = "mysql:host=localhost;dbname=loja";
 
       $pdo = new PDO($conexao, $usuario, $senha_banco);
 
-      $query = $pdo->prepare("SELECT p.nome, p.valor FROM produtos INNER JOIN carrinho_produtos");
+      $query = $pdo->prepare("select p.url_imagem, c.id, p.nome, p.valor from produtos p 
+      inner join carrinho_produtos c 
+      on p.id = c.id_produto
+      inner join usuarios u 
+      on u.id = c.id_usuario and u.id = :usuario;");
+      $query->bindParam("usuario", $id_usuario, PDO::PARAM_INT);
 
       $query->execute();
 
       return $query->fetchAll(PDO::FETCH_ASSOC);
+   }
+   public function adicionar_produto_carrinho(string $id_produto, string $id_usuario)
+   {
+      $usuario = "root";
+      $senha_banco = "";
+      $conexao = "mysql:host=localhost;dbname=loja";
+
+      $pdo = new PDO($conexao, $usuario, $senha_banco);
+
+      $query = $pdo->prepare("insert into carrinho_produtos(id_produto, id_usuario) values (:produto, :usuario)");
+      $query->bindParam("produto", $id_produto, PDO::PARAM_INT);
+      $query->bindParam("usuario", $id_usuario, PDO::PARAM_INT);
+
+      $query->execute();
+   }
+   public function remover_produto_carrinho(string $id_carrinho)
+   {
+      $usuario = "root";
+      $senha_banco = "";
+      $conexao = "mysql:host=localhost;dbname=loja";
+
+      $pdo = new PDO($conexao, $usuario, $senha_banco);
+
+      $query = $pdo->prepare("delete from carrinho_produtos where id = :id_carrinho");
+      $query->bindParam("id", $id_carrinho, PDO::PARAM_INT);
+
+      $query->execute();
    }
    public function atualizar_produto(string $id, string $url, string $nome, string $descricao, string $valor, string $categoria)
    {
