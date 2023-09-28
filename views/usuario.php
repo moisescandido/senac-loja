@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <title>Perfil</title>
 </head>
 
 <body>
@@ -56,7 +54,35 @@
 
         </form>
     </section>
+    <hr>
+    <section>
+        <?php
+        include("../db/produto_db.php");
+        $banco = new Produtos();
+        $carrinho = $banco->produtos_carrinho($usuario);
 
+        if (empty($carrinho)) {
+            echo '<h1>Carrinho vazio</h1>';
+        } else {
+            foreach ($carrinho as $item) {
+                echo '
+            <form class="ms-3 d-flex mb-3">
+            <div class="col-md-1">
+                <img src="../img/' . $item['url_imagem'] . '" class="img-fluid" alt="Imagem do Produto">
+            </div>
+            <div>
+                <h5>' . $item['valor'] . '</h5>
+                <p class="large mb-0">' . $item['nome'] . '</p>
+                <button class="btn btn-danger">
+                    Excluir
+                </button>
+            </div>
+            </form>
+            ';
+            }
+        }
+        ?>
+    </section>
     <?php
 
     if (isset($_POST["enviar"])) {
