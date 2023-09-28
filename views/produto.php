@@ -27,9 +27,7 @@
         $banco = new Produtos();
         $informacoes_produto = $banco->nome_produto($nome_produto);
 
-        if ($_SESSION['id_funcao'] === 2 || $_SESSION['id_funcao'] === 3) {
-
-            echo '
+        echo '
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
@@ -43,8 +41,9 @@
                         <p><strong>Categoria:</strong> ' . $informacoes_produto['categoria'] . '</p>
                         <a class="btn btn-lg btn-success">Comprar</a>
                     </div>
-                    <br>
-                    <form method="post">
+                    <br>';
+        if ($_SESSION['id_funcao'] === 2 || $_SESSION['id_funcao'] === 3) {
+            echo '<form method="post">
                         <div class="form-group">
                             <label for="url">Url</label>
                             <input name="url" type="text" class="form-control" id="url" aria-describedby="emailHelp"
