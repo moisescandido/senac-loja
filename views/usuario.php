@@ -60,26 +60,36 @@
         include("../db/produto_db.php");
         $banco = new Produtos();
         $carrinho = $banco->produtos_carrinho($usuario);
+        $total = 0;
 
         if (empty($carrinho)) {
             echo '<h1>Carrinho vazio</h1>';
         } else {
+            echo '<div class="d-flex">';
             foreach ($carrinho as $item) {
+                $total = $total + floatval($item['valor']);
                 echo '
-            <form class="ms-3 d-flex mb-3">
-            <div class="col-md-1">
-                <img src="../img/' . $item['url_imagem'] . '" class="img-fluid" alt="Imagem do Produto">
-            </div>
-            <div>
-                <h5>' . $item['valor'] . '</h5>
-                <p class="large mb-0">' . $item['nome'] . '</p>
-                <button class="btn btn-danger">
-                    Excluir
-                </button>
-            </div>
-            </form>
-            ';
+                <div class="d-flex">
+                    <div class="col-md-1">
+                        <img style="border-radius: 10px;" src="../img/' . $item['url_imagem'] . '" class="img-fluid" alt="Imagem do Produto">
+                    </div>
+                    <div>
+                        <h5>' . $item['nome'] . '</h5>
+                        <p class="large mb-0">' . $item['valor'] . '</p>
+                        <form>
+                            <button name="excluir_carrinho" value="' . $item['id'] . '" class="btn btn-danger">Excluir</button>
+                        </form>
+                    </div>
+                </div>
+                ';
             }
+            echo '</div>';
+            echo '<div>
+                <h1>Total: ' . $total . '</h1>
+            </div>';
+            echo '</div>';
+
+
         }
         ?>
     </section>
