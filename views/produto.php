@@ -12,6 +12,10 @@
 <body>
     <?php
     session_start();
+
+    include("../db/produto_db.php");
+    $banco = new Produtos();
+
     echo '
     <nav class="navbar navbar-light bg-light">
         <a href="./home.php" class="navbar-brand">Home</a>
@@ -23,8 +27,6 @@
     } else {
         $nome_produto = $_GET['produto'];
 
-        include("../db/produto_db.php");
-        $banco = new Produtos();
         $informacoes_produto = $banco->nome_produto($nome_produto);
 
         echo '
@@ -40,6 +42,11 @@
                         <p><strong>Descrição:</strong> ' . $informacoes_produto['descricao'] . '</p>
                         <p><strong>Categoria:</strong> ' . $informacoes_produto['categoria'] . '</p>
                         <a class="btn btn-lg btn-success">Comprar</a>
+                        <form method="post">    
+                            <input type="hidden" name="id_produto" value="' . $informacoes_produto['id'] . '">
+                            <input type="hidden" name="id_usuario" value="' . $_SESSION['id_funcao'] . '">                    
+                            <button type="submit"class="btn btn-lg btn-primary" name="carrinho">Adicionar ao carrinho</button>
+                        </form>
                     </div>
                     <br>';
         if ($_SESSION['id_funcao'] === 2 || $_SESSION['id_funcao'] === 3) {
@@ -86,11 +93,14 @@
     }
 
     if (isset($_POST['enviar'])) {
-        include("../db/produto_db.php");
-        $banco = new Produtos();
         $produto = $banco->nome_produto($_POST['nome']);
     }
+    if (isset($_POST['carrinho'])) {
+        $id_produto = $_POST['id_produto'];
+        $id_usuario = $_POST['id_usuario'];
 
+        $banco->adicionar_produto_carrinho($id_produto, $id_usuario);
+    }
     if (isset($_POST['atualizar'])) {
         $id = $_POST['atualizar'];
         $url = $_POST['url'];
