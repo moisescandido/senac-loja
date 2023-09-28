@@ -75,20 +75,21 @@ class Produtos
 
       return $query->fetchAll(PDO::FETCH_ASSOC);
    }
-   public function produtos_carrinho(string $id_usuario)
+   public function produtos_carrinho(string $usuario)
    {
-      $usuario = "root";
+      $usuario_banco = "root";
       $senha_banco = "";
       $conexao = "mysql:host=localhost;dbname=loja";
 
-      $pdo = new PDO($conexao, $usuario, $senha_banco);
+      $pdo = new PDO($conexao, $usuario_banco, $senha_banco);
 
-      $query = $pdo->prepare("select p.url_imagem, c.id, p.nome, p.valor from produtos p 
+      $query = $pdo->prepare("select p.url_imagem, c.id, p.nome, p.valor 
+      from produtos p 
       inner join carrinho_produtos c 
       on p.id = c.id_produto
       inner join usuarios u 
-      on u.id = c.id_usuario and u.id = :usuario;");
-      $query->bindParam("usuario", $id_usuario, PDO::PARAM_INT);
+      on u.id = c.id_usuario and (u.id = :usuario || u.nome = :usuario);");
+      $query->bindParam("usuario", $usuario, PDO::PARAM_STR);
 
       $query->execute();
 
