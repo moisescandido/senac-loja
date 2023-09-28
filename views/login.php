@@ -46,6 +46,7 @@
         session_start();
         $_SESSION["nome"] = $resultado['nome'];
         $_SESSION["id_funcao"] = $resultado['id_funcao'];
+        $_SESSION["id_usuario"] = $resultado['id'];
         header("Location: ./home.php");
         exit;
       } else {
