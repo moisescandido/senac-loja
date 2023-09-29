@@ -65,7 +65,7 @@
         if (empty($carrinho)) {
             echo '<h1>Carrinho vazio</h1>';
         } else {
-            echo '<div class="d-flex">';
+            echo '<div class="d-flex flex-wrap">';
             foreach ($carrinho as $item) {
                 $total = $total + floatval($item['valor']);
                 echo '
